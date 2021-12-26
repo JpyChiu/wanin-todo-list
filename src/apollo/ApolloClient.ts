@@ -1,18 +1,18 @@
 import { ApolloClient, InMemoryCache, gql, createHttpLink } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 
-const graphqlEndpoint = 'http://35.189.161.175:8080/v1/graphql'
-const adminSecret = 'myadminsecretkey'
+const graphqlEndpoint = process.env.REACT_APP_API_ENDPOINT!
+const adminSecret = process.env.REACT_APP_ADMIN_SECRET!
+
 const httpLink = createHttpLink({
   uri: graphqlEndpoint,
 })
 const authLink = setContext((_, { headers }) => {
-  const token = adminSecret
   // return the headers to the context so httpLink can read them
   return {
     headers: {
       ...headers,
-      'x-hasura-admin-secret': token,
+      'x-hasura-admin-secret': adminSecret,
     },
   }
 })

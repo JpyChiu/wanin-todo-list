@@ -4,10 +4,10 @@ import { ApolloProvider } from '@apollo/client'
 
 import './index.css'
 import App from './App'
-import apolloClient from './apolloClient'
+import ApolloClient from './apollo/ApolloClient'
 
 ReactDOM.render(
-  <ApolloProvider client={apolloClient}>
+  <ApolloProvider client={ApolloClient}>
     <App />
   </ApolloProvider>,
   document.getElementById('root'),
