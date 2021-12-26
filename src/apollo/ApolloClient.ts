@@ -1,5 +1,7 @@
-import { ApolloClient, InMemoryCache, gql, createHttpLink } from '@apollo/client'
+import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
+
+import { GET_TODO_LIST } from '../graphql/Query'
 
 const graphqlEndpoint = process.env.REACT_APP_API_ENDPOINT!
 const adminSecret = process.env.REACT_APP_ADMIN_SECRET!
@@ -25,15 +27,7 @@ export const client = new ApolloClient({
 // for debug
 client
   .query({
-    query: gql`
-      query GetTodoList {
-        todo_list {
-          id
-          task
-          assignee
-        }
-      }
-    `,
+    query: GET_TODO_LIST,
   })
   .then(result => console.log(result))
 
