@@ -4,5 +4,18 @@ mutation InsertTodoList($task: String!, $assignee: String!) {
     task
     assignee
     created_at
+    updated_at
+  }
+}
+
+mutation DeleteTodoList($id: Int!) {
+  delete_todo_list(where: { id: { _eq: $id } }) {
+    returning {
+      assignee
+      created_at
+      id
+      task
+      updated_at
+    }
   }
 }

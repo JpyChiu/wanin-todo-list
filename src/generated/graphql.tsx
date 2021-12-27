@@ -429,7 +429,14 @@ export type InsertTodoListMutationVariables = Exact<{
 }>;
 
 
-export type InsertTodoListMutation = { __typename?: 'mutation_root', insert_todo_list_one?: { __typename?: 'todo_list', id: number, task: string, assignee?: string | null | undefined, created_at: any } | null | undefined };
+export type InsertTodoListMutation = { __typename?: 'mutation_root', insert_todo_list_one?: { __typename?: 'todo_list', id: number, task: string, assignee?: string | null | undefined, created_at: any, updated_at: any } | null | undefined };
+
+export type DeleteTodoListMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteTodoListMutation = { __typename?: 'mutation_root', delete_todo_list?: { __typename?: 'todo_list_mutation_response', returning: Array<{ __typename?: 'todo_list', assignee?: string | null | undefined, created_at: any, id: number, task: string, updated_at: any }> } | null | undefined };
 
 export type GetTodoListQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -444,6 +451,7 @@ export const InsertTodoListDocument = gql`
     task
     assignee
     created_at
+    updated_at
   }
 }
     `;
@@ -474,6 +482,45 @@ export function useInsertTodoListMutation(baseOptions?: Apollo.MutationHookOptio
 export type InsertTodoListMutationHookResult = ReturnType<typeof useInsertTodoListMutation>;
 export type InsertTodoListMutationResult = Apollo.MutationResult<InsertTodoListMutation>;
 export type InsertTodoListMutationOptions = Apollo.BaseMutationOptions<InsertTodoListMutation, InsertTodoListMutationVariables>;
+export const DeleteTodoListDocument = gql`
+    mutation DeleteTodoList($id: Int!) {
+  delete_todo_list(where: {id: {_eq: $id}}) {
+    returning {
+      assignee
+      created_at
+      id
+      task
+      updated_at
+    }
+  }
+}
+    `;
+export type DeleteTodoListMutationFn = Apollo.MutationFunction<DeleteTodoListMutation, DeleteTodoListMutationVariables>;
+
+/**
+ * __useDeleteTodoListMutation__
+ *
+ * To run a mutation, you first call `useDeleteTodoListMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteTodoListMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteTodoListMutation, { data, loading, error }] = useDeleteTodoListMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteTodoListMutation(baseOptions?: Apollo.MutationHookOptions<DeleteTodoListMutation, DeleteTodoListMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteTodoListMutation, DeleteTodoListMutationVariables>(DeleteTodoListDocument, options);
+      }
+export type DeleteTodoListMutationHookResult = ReturnType<typeof useDeleteTodoListMutation>;
+export type DeleteTodoListMutationResult = Apollo.MutationResult<DeleteTodoListMutation>;
+export type DeleteTodoListMutationOptions = Apollo.BaseMutationOptions<DeleteTodoListMutation, DeleteTodoListMutationVariables>;
 export const GetTodoListDocument = gql`
     query GetTodoList {
   todo_list {
