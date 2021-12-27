@@ -1,47 +1,23 @@
-import { useState, useCallback } from 'react'
-import {
-  Box,
-  Button,
-  Container,
-  IconButton,
-  List,
-  ListItem,
-  ListItemSecondaryAction,
-  ListItemText,
-  ListSubheader,
-  TextField,
-} from '@mui/material'
+import { Container, IconButton, ListItem, ListItemSecondaryAction, ListItemText } from '@mui/material'
 import Delete from '@mui/icons-material/Delete'
 
-import { useGetTodoListQuery, useInsertTodoListMutation } from '../generated/graphql'
+import { useGetTodoListQuery } from '../generated/graphql'
+import AddTodo from './AddTodo'
+import BaseList from '../common/BaseList'
 
 function MainLayout() {
   const { data, loading, error, refetch } = useGetTodoListQuery()
-  const [InsertTodoList] = useInsertTodoListMutation()
-  const [task, setTask] = useState<string>('')
-  const [assignee, setAssignee] = useState<string>('')
 
-  const handleTaskChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = e.target
-      setTask(value)
-    },
-    [setTask],
-  )
+  const backgroundTransition = (index: number) => {
+    if (index % 2 === 0) {
+      return { background: '#e8e8e8' }
+    }
+    return undefined
+  }
 
-  const handleAssigneeChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = e.target
-      setAssignee(value)
-    },
-    [setAssignee],
-  )
-
-  const handleSubmitClick = async () => {
-    await InsertTodoList({ variables: { task, assignee } })
-    setTask('')
-    setAssignee('')
-    refetch()
+  const concatNameTodo = (assignee: string | null | undefined, task: string) => {
+    const name = assignee ? assignee : 'No name'
+    return `${name}: ${task}`
   }
 
   if (loading) return <div>Loading</div>
@@ -50,66 +26,25 @@ function MainLayout() {
 
   return (
     <Container maxWidth="md">
-      <TextField
-        id="standard-full-width"
-        label="Create Todo"
-        style={{ marginTop: 20 }}
-        placeholder="input task.."
-        fullWidth
-        variant="outlined"
-        onChange={handleTaskChange}
-        value={task}
-        InputLabelProps={{
-          shrink: true,
-        }}
-      />
-      <TextField
-        id="standard-full-width"
-        style={{ marginTop: 20 }}
-        placeholder="input assignee.."
-        fullWidth
-        variant="outlined"
-        onChange={handleAssigneeChange}
-        value={assignee}
-        InputLabelProps={{
-          shrink: true,
-        }}
-      />
-      <Button onClick={handleSubmitClick} color="primary" variant="outlined" style={{ margin: 8 }}>
-        Submit
-      </Button>
-      <Box border={1} borderRadius="borderRadius" borderColor="grey.400" style={{ marginTop: 10, padding: 2 }}>
-        <List
-          component="nav"
-          aria-label="contacts"
-          subheader={
-            <ListSubheader component="div" id="nested-list-subheader">
-              Todos
-            </ListSubheader>
-          }
-        >
-          {data.todo_list.map((todo, index) => (
-            <div key={`${index}`}>
-              <ListItem id={`${index}`} key={todo.id} button onClick={() => {}}>
-                <ListItemText
-                  id={`${todo.id}`}
-                  primary={
-                    <p>
-                      {todo.assignee ? todo.assignee : 'No name'}: {todo.task}
-                    </p>
-                  }
-                  secondary={new Date(todo.created_at).toUTCString()}
-                />
-                <ListItemSecondaryAction data-post-id={todo.id} onClick={() => {}}>
-                  <IconButton edge="end" aria-label="delete">
-                    <Delete />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </div>
-          ))}
-        </List>
-      </Box>
+      <AddTodo refetch={refetch} />
+      <BaseList header="Todos">
+        {data.todo_list.map((todo, index) => (
+          <div key={`${index}`} style={backgroundTransition(index)}>
+            <ListItem id={`${index}`} key={todo.id} button onClick={() => {}}>
+              <ListItemText
+                id={`${todo.id}`}
+                primary={<p>{concatNameTodo(todo.assignee, todo.task)}</p>}
+                secondary={new Date(todo.created_at).toUTCString()}
+              />
+              <ListItemSecondaryAction data-post-id={todo.id} onClick={() => {}}>
+                <IconButton edge="end" aria-label="delete">
+                  <Delete />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          </div>
+        ))}
+      </BaseList>
     </Container>
   )
 }
