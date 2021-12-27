@@ -10,4 +10,5 @@
 # SetUp
 
 - run `docker-compose up -d` to start server with docker
+  - If failed, please just run `yarn start`
 - url: `localhost:3000`
