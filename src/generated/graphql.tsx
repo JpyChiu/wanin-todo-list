@@ -423,12 +423,57 @@ export type Todo_List_Variance_Fields = {
   id?: Maybe<Scalars['Float']>;
 };
 
+export type InsertTodoListMutationVariables = Exact<{
+  task: Scalars['String'];
+  assignee: Scalars['String'];
+}>;
+
+
+export type InsertTodoListMutation = { __typename?: 'mutation_root', insert_todo_list_one?: { __typename?: 'todo_list', id: number, task: string, assignee?: string | null | undefined, created_at: any } | null | undefined };
+
 export type GetTodoListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetTodoListQuery = { __typename?: 'query_root', todo_list: Array<{ __typename?: 'todo_list', assignee?: string | null | undefined, created_at: any, id: number, task: string, updated_at: any }> };
 
 
+export const InsertTodoListDocument = gql`
+    mutation InsertTodoList($task: String!, $assignee: String!) {
+  insert_todo_list_one(object: {task: $task, assignee: $assignee}) {
+    id
+    task
+    assignee
+    created_at
+  }
+}
+    `;
+export type InsertTodoListMutationFn = Apollo.MutationFunction<InsertTodoListMutation, InsertTodoListMutationVariables>;
+
+/**
+ * __useInsertTodoListMutation__
+ *
+ * To run a mutation, you first call `useInsertTodoListMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertTodoListMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertTodoListMutation, { data, loading, error }] = useInsertTodoListMutation({
+ *   variables: {
+ *      task: // value for 'task'
+ *      assignee: // value for 'assignee'
+ *   },
+ * });
+ */
+export function useInsertTodoListMutation(baseOptions?: Apollo.MutationHookOptions<InsertTodoListMutation, InsertTodoListMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<InsertTodoListMutation, InsertTodoListMutationVariables>(InsertTodoListDocument, options);
+      }
+export type InsertTodoListMutationHookResult = ReturnType<typeof useInsertTodoListMutation>;
+export type InsertTodoListMutationResult = Apollo.MutationResult<InsertTodoListMutation>;
+export type InsertTodoListMutationOptions = Apollo.BaseMutationOptions<InsertTodoListMutation, InsertTodoListMutationVariables>;
 export const GetTodoListDocument = gql`
     query GetTodoList {
   todo_list {

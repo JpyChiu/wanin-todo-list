@@ -1,0 +1,8 @@
+mutation InsertTodoList($task: String!, $assignee: String!) {
+  insert_todo_list_one(object: { task: $task, assignee: $assignee }) {
+    id
+    task
+    assignee
+    created_at
+  }
+}
