@@ -1,0 +1,9 @@
+query GetTodoList {
+  todo_list {
+    assignee
+    created_at
+    id
+    task
+    updated_at
+  }
+}
