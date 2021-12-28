@@ -10,6 +10,6 @@
 # SetUp
 
 - run `docker-compose up -d` to start server with docker
-  - If want to run without container, please run `yarn install` and `yarn start`
-- runrun `docker-compose down` to close server
+  - If want to directly start the development server, please run `yarn install` and `yarn start`
+- run `docker-compose down` to close server
 - url: `localhost:3000`
