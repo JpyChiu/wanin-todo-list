@@ -1,14 +1,10 @@
 import { useState, useCallback } from 'react'
-import { Button } from '@mui/material'
+import { Box, Button } from '@mui/material'
 
 import BaseInput from '../common/BaseInput'
 import { useInsertTodoListMutation } from '../generated/graphql'
 
-type Props = {
-  refetch: () => void
-}
-
-function AddTodo(props: Props) {
+function AddTodo() {
   const [InsertTodoList] = useInsertTodoListMutation()
   const [task, setTask] = useState<string>('')
   const [assignee, setAssignee] = useState<string>('')
@@ -33,17 +29,16 @@ function AddTodo(props: Props) {
     await InsertTodoList({ variables: { task, assignee } })
     setTask('')
     setAssignee('')
-    props.refetch()
   }
 
   return (
-    <>
+    <Box sx={{ flex: 0, width: '100%' }}>
       <BaseInput placeholder="input task.." label="Create Todo" onChange={handleTaskChange} value={task} />
       <BaseInput placeholder="input assignee.." onChange={handleAssigneeChange} value={assignee} />
       <Button onClick={handleSubmitClick} color="primary" variant="outlined">
         Submit
       </Button>
-    </>
+    </Box>
   )
 }
 

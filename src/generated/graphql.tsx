@@ -443,6 +443,11 @@ export type GetTodoListQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetTodoListQuery = { __typename?: 'query_root', todo_list: Array<{ __typename?: 'todo_list', assignee?: string | null | undefined, created_at: any, id: number, task: string, updated_at: any }> };
 
+export type FetchTodoListSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FetchTodoListSubscription = { __typename?: 'subscription_root', todo_list: Array<{ __typename?: 'todo_list', assignee?: string | null | undefined, created_at: any, id: number, task: string, updated_at: any }> };
+
 
 export const InsertTodoListDocument = gql`
     mutation InsertTodoList($task: String!, $assignee: String!) {
@@ -559,3 +564,36 @@ export function useGetTodoListLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetTodoListQueryHookResult = ReturnType<typeof useGetTodoListQuery>;
 export type GetTodoListLazyQueryHookResult = ReturnType<typeof useGetTodoListLazyQuery>;
 export type GetTodoListQueryResult = Apollo.QueryResult<GetTodoListQuery, GetTodoListQueryVariables>;
+export const FetchTodoListDocument = gql`
+    subscription FetchTodoList {
+  todo_list {
+    assignee
+    created_at
+    id
+    task
+    updated_at
+  }
+}
+    `;
+
+/**
+ * __useFetchTodoListSubscription__
+ *
+ * To run a query within a React component, call `useFetchTodoListSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useFetchTodoListSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchTodoListSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFetchTodoListSubscription(baseOptions?: Apollo.SubscriptionHookOptions<FetchTodoListSubscription, FetchTodoListSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<FetchTodoListSubscription, FetchTodoListSubscriptionVariables>(FetchTodoListDocument, options);
+      }
+export type FetchTodoListSubscriptionHookResult = ReturnType<typeof useFetchTodoListSubscription>;
+export type FetchTodoListSubscriptionResult = Apollo.SubscriptionResult<FetchTodoListSubscription>;

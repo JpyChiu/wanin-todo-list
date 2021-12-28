@@ -7,6 +7,7 @@ type Props = {
 }
 
 function BaseList(props: Props) {
+  const { header, children } = props
   return (
     <Box border={1} borderRadius="borderRadius" borderColor="black" style={{ marginTop: 10 }}>
       <List
@@ -14,11 +15,11 @@ function BaseList(props: Props) {
         aria-label="contacts"
         subheader={
           <ListSubheader component="div" id="nested-list-subheader">
-            props.header
+            {header}
           </ListSubheader>
         }
       >
-        {props.children}
+        {children}
       </List>
     </Box>
   )
