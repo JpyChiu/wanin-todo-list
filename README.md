@@ -3,7 +3,7 @@
 - [x] subscribe wanin graphql server
 - [x] Create todo
 - [x] Retrieve todo
-- [ ] Update todo
+- [x] Update todo
 - [x] Delete todo
 - [x] live update data after doing CRUD
 
