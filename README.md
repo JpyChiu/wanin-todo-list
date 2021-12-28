@@ -3,12 +3,13 @@
 - [x] subscribe wanin graphql server
 - [x] Create todo
 - [x] Retrieve todo
-- [] Update todo
+- [ ] Update todo
 - [x] Delete todo
 - [x] live update data after doing CRUD
 
 # SetUp
 
 - run `docker-compose up -d` to start server with docker
-  - If failed, please just run `yarn start`
+  - If want to run without container, please run `yarn install` and `yarn start`
+- runrun `docker-compose down` to close server
 - url: `localhost:3000`
