@@ -1,15 +1,15 @@
-import React, { useCallback } from 'react'
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
+import React, { ReactNode, useCallback } from 'react'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material'
 
 export interface DialogProps {
   enable: boolean
-  message: string
+  children: ReactNode
   onClose: () => void
   action: () => void
 }
 
 function BasePopUp(props: React.PropsWithChildren<DialogProps>) {
-  const { enable, onClose, message, action } = props
+  const { enable, onClose, children, action } = props
 
   const onOk = useCallback(() => {
     action()
@@ -19,9 +19,7 @@ function BasePopUp(props: React.PropsWithChildren<DialogProps>) {
   return (
     <Dialog fullWidth={true} open={enable} onClose={onClose}>
       <DialogTitle id="alert-dialog-title" />
-      <DialogContent>
-        <DialogContentText id="alert-dialog-description">{`${message}`}</DialogContentText>
-      </DialogContent>
+      <DialogContent>{children}</DialogContent>
       <DialogActions>
         <Button onClick={onOk} color="primary" autoFocus>
           OK

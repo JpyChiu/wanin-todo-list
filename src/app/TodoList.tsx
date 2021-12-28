@@ -3,33 +3,40 @@ import { IconButton, ListItem, ListItemSecondaryAction, ListItemText } from '@mu
 import Delete from '@mui/icons-material/Delete'
 
 import BaseList from '../common/BaseList'
-import BasePopUp from '../common/BasePopUp'
-import { Todo_List, useDeleteTodoListMutation } from '../generated/graphql'
+import { Todo_List } from '../generated/graphql'
+import DeleteTodo from './DeleteTodo'
+import UpdateTodo from './UpdateTodo'
 
 type Props = {
   todos: Array<Todo_List>
 }
 
+enum PopUpType {
+  Delete = 'delete',
+  Update = 'update',
+  Non = 'non',
+}
+
 function TodoList(props: Props) {
   const { todos } = props
-  const [deletePopUp, setDeletePopUp] = useState<boolean>(false)
-  const [deleteId, setDeleteId] = useState<number | null>(null)
-  const [deleteTodoList] = useDeleteTodoListMutation()
+  const [popUpType, setPopUpType] = useState<PopUpType>(PopUpType.Non)
+  const [targetId, setTargetId] = useState<number | null>(null)
 
-  const onDeletePopUpOpen = (id: number) => {
-    setDeletePopUp(true)
-    setDeleteId(id)
+  const enablePopUp = (target: PopUpType) => {
+    if (target === popUpType) {
+      return true
+    }
+    return false
   }
 
-  const deleteTodo = async (id: number | null) => {
-    if (id) {
-      await deleteTodoList({
-        variables: { id },
-        update: cache => {
-          console.log(cache)
-        },
-      })
-    }
+  const onUpdateDialogOpen = (id: number) => {
+    setPopUpType(PopUpType.Update)
+    setTargetId(id)
+  }
+
+  const onDeletePopUpOpen = (id: number) => {
+    setPopUpType(PopUpType.Delete)
+    setTargetId(id)
   }
 
   const backgroundTransition = (index: number) => {
@@ -49,7 +56,7 @@ function TodoList(props: Props) {
       <BaseList header="Todos">
         {todos.map((todo, index) => (
           <div key={`${index}`} style={backgroundTransition(index)}>
-            <ListItem id={`${index}`} key={todo.id} button onClick={() => {}}>
+            <ListItem id={`${index}`} key={todo.id} button onClick={() => onUpdateDialogOpen(todo.id)}>
               <ListItemText
                 id={`${todo.id}`}
                 primary={<p>{concatNameTodo(todo.assignee, todo.task)}</p>}
@@ -64,12 +71,8 @@ function TodoList(props: Props) {
           </div>
         ))}
       </BaseList>
-      <BasePopUp
-        enable={deletePopUp}
-        message="Are you sure to delete?"
-        onClose={() => setDeletePopUp(false)}
-        action={() => deleteTodo(deleteId)}
-      />
+      <DeleteTodo enable={enablePopUp(PopUpType.Delete)} id={targetId} onClose={() => setPopUpType(PopUpType.Non)} />
+      <UpdateTodo enable={enablePopUp(PopUpType.Update)} id={targetId} onClose={() => setPopUpType(PopUpType.Non)} />
     </>
   )
 }

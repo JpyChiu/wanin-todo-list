@@ -431,12 +431,20 @@ export type InsertTodoListMutationVariables = Exact<{
 
 export type InsertTodoListMutation = { __typename?: 'mutation_root', insert_todo_list_one?: { __typename?: 'todo_list', id: number, task: string, assignee?: string | null | undefined, created_at: any, updated_at: any } | null | undefined };
 
+export type UpdateTodoListMutationVariables = Exact<{
+  id: Scalars['Int'];
+  task: Scalars['String'];
+}>;
+
+
+export type UpdateTodoListMutation = { __typename?: 'mutation_root', update_todo_list?: { __typename?: 'todo_list_mutation_response', returning: Array<{ __typename?: 'todo_list', id: number, task: string, assignee?: string | null | undefined, created_at: any, updated_at: any }> } | null | undefined };
+
 export type DeleteTodoListMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type DeleteTodoListMutation = { __typename?: 'mutation_root', delete_todo_list?: { __typename?: 'todo_list_mutation_response', returning: Array<{ __typename?: 'todo_list', assignee?: string | null | undefined, created_at: any, id: number, task: string, updated_at: any }> } | null | undefined };
+export type DeleteTodoListMutation = { __typename?: 'mutation_root', delete_todo_list?: { __typename?: 'todo_list_mutation_response', returning: Array<{ __typename?: 'todo_list', id: number, task: string, assignee?: string | null | undefined, created_at: any, updated_at: any }> } | null | undefined };
 
 export type GetTodoListQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -487,14 +495,54 @@ export function useInsertTodoListMutation(baseOptions?: Apollo.MutationHookOptio
 export type InsertTodoListMutationHookResult = ReturnType<typeof useInsertTodoListMutation>;
 export type InsertTodoListMutationResult = Apollo.MutationResult<InsertTodoListMutation>;
 export type InsertTodoListMutationOptions = Apollo.BaseMutationOptions<InsertTodoListMutation, InsertTodoListMutationVariables>;
+export const UpdateTodoListDocument = gql`
+    mutation UpdateTodoList($id: Int!, $task: String!) {
+  update_todo_list(where: {id: {_eq: $id}}, _set: {task: $task}) {
+    returning {
+      id
+      task
+      assignee
+      created_at
+      updated_at
+    }
+  }
+}
+    `;
+export type UpdateTodoListMutationFn = Apollo.MutationFunction<UpdateTodoListMutation, UpdateTodoListMutationVariables>;
+
+/**
+ * __useUpdateTodoListMutation__
+ *
+ * To run a mutation, you first call `useUpdateTodoListMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTodoListMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTodoListMutation, { data, loading, error }] = useUpdateTodoListMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      task: // value for 'task'
+ *   },
+ * });
+ */
+export function useUpdateTodoListMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTodoListMutation, UpdateTodoListMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateTodoListMutation, UpdateTodoListMutationVariables>(UpdateTodoListDocument, options);
+      }
+export type UpdateTodoListMutationHookResult = ReturnType<typeof useUpdateTodoListMutation>;
+export type UpdateTodoListMutationResult = Apollo.MutationResult<UpdateTodoListMutation>;
+export type UpdateTodoListMutationOptions = Apollo.BaseMutationOptions<UpdateTodoListMutation, UpdateTodoListMutationVariables>;
 export const DeleteTodoListDocument = gql`
     mutation DeleteTodoList($id: Int!) {
   delete_todo_list(where: {id: {_eq: $id}}) {
     returning {
-      assignee
-      created_at
       id
       task
+      assignee
+      created_at
       updated_at
     }
   }
