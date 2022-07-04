@@ -3,7 +3,7 @@ import { IconButton, ListItem, ListItemSecondaryAction, ListItemText } from '@mu
 import Delete from '@mui/icons-material/Delete'
 
 import BaseList from '../common/BaseList'
-import { Todo_List } from '../generated/graphql'
+import { Maybe, Todo_List } from '../generated/graphql'
 import DeleteTodo from './DeleteTodo'
 import UpdateTodo from './UpdateTodo'
 
@@ -46,7 +46,7 @@ function TodoList(props: Props) {
     return undefined
   }
 
-  const concatNameTodo = (assignee: string | null | undefined, task: string) => {
+  const concatNameTodo = (assignee: Maybe<string> | undefined, task: string) => {
     const name = assignee ? assignee : 'No name'
     return `${name}: ${task}`
   }
