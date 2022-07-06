@@ -13,4 +13,4 @@
   - If want to directly start the development server, please run `yarn install` and `yarn start`
 - run `docker-compose down` to close server
 - url: `localhost:3000`
-- update graphql schema: `yarn graphql-codegen --config ./codegen.yml`
+- update graphql schema: `yarn graphql-codegen --config ./codegen.yml` or `yarn gen`
